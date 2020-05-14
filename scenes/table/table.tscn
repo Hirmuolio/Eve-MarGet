@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/table/table.gd" type="Script" id=1]
+
+[node name="table" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="headers" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+custom_constants/separation = 0
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_right = 1024.0
+margin_bottom = 4.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_top = 4.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="row container" type="VBoxContainer" parent="ScrollContainer"]
+custom_constants/separation = 0

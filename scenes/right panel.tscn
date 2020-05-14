@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/orders.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/history.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/right panel.gd" type="Script" id=3]
+
+[node name="right panel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="upper container" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 64.0
+
+[node name="icon" type="TextureRect" parent="VBoxContainer/upper container"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="texts container" type="VBoxContainer" parent="VBoxContainer/upper container"]
+margin_left = 68.0
+margin_right = 1024.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+
+[node name="name" type="Label" parent="VBoxContainer/upper container/texts container"]
+margin_right = 956.0
+margin_bottom = 14.0
+text = "PLEX"
+
+[node name="groups" type="RichTextLabel" parent="VBoxContainer/upper container/texts container"]
+margin_top = 18.0
+margin_right = 956.0
+margin_bottom = 64.0
+size_flags_vertical = 3
+
+[node name="lower container" type="TabContainer" parent="VBoxContainer"]
+margin_top = 68.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+
+[node name="orders" parent="VBoxContainer/lower container" instance=ExtResource( 1 )]
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="history" parent="VBoxContainer/lower container" instance=ExtResource( 2 )]
