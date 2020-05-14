@@ -3,22 +3,24 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print( 10%4)
 	pass # Replace with function body.
 	#test()
 
 func test():
-	var raw = "202000200.30"
-	var formatted = format_decimal(  raw )
+	# 2d 12h 8m 40s
+	var raw = 216520
+	var formatted = duration_seconds_format(  raw )
 	print( "f: ", formatted)
 
 func format_decimal( input : String ) -> String:
 	var decimal_separator = "."
 	var thousand_separator = " " #thin space
 	
-	var split = input.rsplit ( decimal_separator )
+	var split : PoolStringArray = input.rsplit ( decimal_separator )
 	if split.size() == 1:
 		split.append( "00" )
+	if split[1].length() == 1:
+		split[1] = split[1] + "0"
 	
 	var output : String = ""
 	
@@ -53,7 +55,14 @@ func string_time_to_dict( time : String ) -> Dictionary:
 func duration_seconds_format( in_seconds : int) -> String:
 	# Turns seconds int daus, hours, minutes and seconds
 	
-	var seconds = in_seconds % 60
+	var seconds : int = in_seconds % (24*60*60)
+	var days : int = ( in_seconds - seconds ) / (24*60*60)
 	
+	seconds = seconds % ( 60 * 60 )
+	var hours : int = ( in_seconds - days * (24*60*60) - seconds ) / ( 60*60 )
 	
-	return ""
+	seconds = seconds % ( 60 )
+	var minutes : int = ( in_seconds - days * (24*60*60) - hours * (60*60) - seconds ) / 60
+	
+	var output : String = str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
+	return output

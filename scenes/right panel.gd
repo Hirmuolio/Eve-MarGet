@@ -3,7 +3,7 @@ extends Control
 onready var icon_node := get_node( "VBoxContainer/upper container/icon" )
 onready var name_node := get_node("VBoxContainer/upper container/texts container/name")
 onready var category_node := get_node("VBoxContainer/upper container/texts container/groups")
-onready var orders_node := get_node( "VBoxContainer/lower container/orders" )
+onready var orders_node := get_node( "VBoxContainer/lower container" )
 
 onready var order_scene = load("res://scenes/order.tscn")
 
