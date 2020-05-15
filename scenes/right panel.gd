@@ -5,7 +5,6 @@ onready var name_node := get_node("VBoxContainer/upper container/texts container
 onready var category_node := get_node("VBoxContainer/upper container/texts container/groups")
 onready var orders_node := get_node( "VBoxContainer/lower container" )
 
-onready var order_scene = load("res://scenes/order.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

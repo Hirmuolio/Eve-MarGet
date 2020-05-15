@@ -19,6 +19,13 @@ size_flags_horizontal = 3
 text = "HEADER"
 clip_text = true
 
+[node name="sort button" type="TextureButton" parent="Label"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="VSeparator" type="VSeparator" parent="."]
 margin_left = 66.0
 margin_right = 70.0
@@ -33,5 +40,6 @@ mouse_default_cursor_shape = 15
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="button_down" from="Label/sort button" to="." method="_on_sort_button_button_down"]
 [connection signal="button_down" from="VSeparator/TextureButton" to="." method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="VSeparator/TextureButton" to="." method="_on_TextureButton_button_up"]

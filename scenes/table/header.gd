@@ -5,6 +5,7 @@ var resizing := false
 var align = 0
 
 signal new_width( new_width )
+signal sort
 
 func _ready():
 	pass # Replace with function body.
@@ -31,3 +32,7 @@ func _on_TextureButton_button_down():
 
 func _on_TextureButton_button_up():
 	resizing = false
+
+
+func _on_sort_button_button_down():
+	emit_signal("sort")

@@ -5,6 +5,9 @@ var row_scene = load( "res://scenes/table/row.tscn" )
 
 onready var row_cont_node = get_node( "ScrollContainer/row container" )
 
+var sort_by : int = 1
+var sort_reverse = false
+
 func _ready():
 	pass
 	#test()
@@ -23,6 +26,8 @@ func add_header( label : String, align := 0 ):
 	header_node.align = align
 	$headers.add_child( header_node )
 
+func do_sort():
+	pass
 
 func add_row( row_contents : Array ):
 	var row_node = row_scene.instance()

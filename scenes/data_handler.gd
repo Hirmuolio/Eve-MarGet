@@ -5,7 +5,7 @@ var names_ids : Dictionary = {}
 var ids_names : Dictionary = {}
 var ids_attributes : Dictionary = {}
 var marketgroups : Dictionary = {}
-var location_id_names : Dictionary = {}
+var location_cache : Dictionary = {}
 
 var work_folder = "user://"
 
@@ -33,8 +33,8 @@ func _ready():
 		yield( esi_ids_to_names( all_ids ), "completed" )
 		save_json(work_folder + "names_ids.json", names_ids)
 		save_json(work_folder + "ids_names.json", ids_names)
-	if dir.file_exists("location_id_names.json"):
-		location_id_names = load_json(work_folder + "location_id_names.json")
+	if dir.file_exists("location_cache.json"):
+		location_cache = load_json(work_folder + "location_cache.json")
 
 
 	pass
@@ -146,13 +146,13 @@ func get_station_name( station_id : int ):
 	esi_caller.queue_free()
 	
 	if response["response_code"] != 200:
-		location_id_names[ str( station_id ) ] = "POS"
-		save_json(work_folder + "location_id_names.json", location_id_names)
+		location_cache[ str( station_id ) ] = {"name":"POS"}
+		save_json(work_folder + "location_cache.json", location_cache)
 		return "POS"
 	var station_name = response["response"].result["name"]
 	
-	location_id_names[ str( station_id ) ] = station_name
-	save_json(work_folder + "location_id_names.json", location_id_names)
+	location_cache[ str( station_id ) ] = response["response"].result
+	save_json(work_folder + "location_cache.json", location_cache)
 	
 	return station_name
 
