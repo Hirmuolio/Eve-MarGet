@@ -32,11 +32,8 @@ func set_orders( esi_response : Array ):
 		var location_id : int = order["location_id"]
 		
 		# Jita 4-4 = 60003760
-		var location : String
-		if str(location_id) in DataHandler.location_cache:
-			location = DataHandler.location_cache[ str(location_id) ]["name"]
-		else:
-			location = yield( DataHandler.get_station_name( location_id ), "completed" )
+		var system_id = order["system_id"]
+		var location : String = yield( DataHandler.get_station_name( location_id, system_id ), "completed" )
 		
 		
 		# "issued": "2020-05-09T22:12:14Z",

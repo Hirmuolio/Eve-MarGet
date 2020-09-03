@@ -22,23 +22,24 @@ func hide_buy():
 
 func set_contents( row : Array, headers : Array):
 	contents = row
-	$quantity.set_content( Utility.format_int_thousands(row[0]) )
-	$price.set_content( Utility.format_float_decimal(row[1]) + " ISK" )
+	$quantity.set_content( Utility.format_int_thousands(row[0]) + " " )
+	$price.set_content( Utility.format_float_decimal(row[1]) + " ISK " )
 	$location.set_content( row[2] )
 	if !sell_order:
 		var buy_range : String
 		if row[3] == -1:
-			buy_range = "Station"
+			buy_range = " Station"
 		elif row[3] == 0:
-			buy_range = "Solar system"
+			buy_range = " Solar system"
 		elif row[3] == 100:
-			buy_range = "Region"
+			buy_range = " Region"
 		else:
-			buy_range = str(row[3]) + " jumps"
+			buy_range = " " + str(row[3]) + " jumps"
 			
 		$range.set_content( buy_range )
 		$min_v.set_content( str(row[4]) )
-	$expires.set_content( str(row[5]) )
+	var expires : String = Utility.duration_seconds_format( row[5] )
+	$expires.set_content( expires )
 	
 	var row_elements = get_children()
 	for i in range( get_child_count() ):

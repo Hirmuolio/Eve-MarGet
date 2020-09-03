@@ -5,7 +5,8 @@ var names_ids : Dictionary = {}
 var ids_names : Dictionary = {}
 var ids_attributes : Dictionary = {}
 var marketgroups : Dictionary = {}
-var location_cache : Dictionary = {}
+var station_cache : Dictionary = {}
+var system_cache : Dictionary = {}
 
 var work_folder = "user://"
 
@@ -33,14 +34,15 @@ func _ready():
 		yield( esi_ids_to_names( all_ids ), "completed" )
 		save_json(work_folder + "names_ids.json", names_ids)
 		save_json(work_folder + "ids_names.json", ids_names)
-	if dir.file_exists("location_cache.json"):
-		location_cache = load_json(work_folder + "location_cache.json")
+	if dir.file_exists("station_cache.json"):
+		station_cache = load_json(work_folder + "station_cache.json")
+	
+	if dir.file_exists("system_cache.json"):
+		system_cache = load_json(work_folder + "system_cache.json")
+	else:
+		system_cache = {}
+		save_json(work_folder + "system_cache.json", system_cache)
 
-
-	pass
-
-func test():
-	print( "It works" )
 
 func load_json(file_path: String):
 	#Get dictionary out of kson file
@@ -135,7 +137,6 @@ func esi_get_orders( item_id : String):
 		var pages = response["headers"]["X-Pages"]
 		print( "ERROR MANY PAGES ", pages)
 	
-	
 	emit_signal("orders_loaded", [response])
 
 func esi_get_market_history( item_id : String ):
@@ -152,23 +153,52 @@ func esi_get_market_history( item_id : String ):
 	emit_signal("history_loaded", [response])
 	pass
 
-func get_station_name( station_id : int ):
+func get_station_name( station_id : int, system_id : int ) -> String:
+	if str(station_id) in DataHandler.station_cache:
+		yield( get_tree().create_timer(0), "timeout" )
+		return DataHandler.station_cache[ str(station_id) ]["name"]
 	var scope : String = "/v2/universe/stations/" + str(station_id) + "/"
 	var esi_caller = esi_caller_scene.instance()
 	add_child(esi_caller)
 	var response = yield( esi_caller.call_esi( scope ), "completed" )
 	esi_caller.queue_free()
 	
-	if response["response_code"] != 200:
-		location_cache[ str( station_id ) ] = {"name":"POS"}
-		save_json(work_folder + "location_cache.json", location_cache)
-		return "POS"
+	if response["response_code"] == 400:
+		# That is no station. It is a player owned structure
+		var system_name = yield( get_system_name( system_id), "completed" )
+		var station_name = system_name + " - POS"
+		station_cache[ str( station_id ) ] = {"name":station_name}
+		save_json(work_folder + "station_cache.json", station_cache)
+		return station_name
+	elif response["response_code"] != 200:
+		# Probably failed 
+		print( "Failed to get station info")
+		return "ERROR"
 	var station_name = response["response"].result["name"]
 	
-	location_cache[ str( station_id ) ] = response["response"].result
-	save_json(work_folder + "location_cache.json", location_cache)
+	station_cache[ str( station_id ) ] = response["response"].result
+	save_json(work_folder + "station_cache.json", station_cache)
 	
 	return station_name
+
+func get_system_name( system_id : int) -> String:
+	var scope : String = "/v4/universe/systems/" + str(system_id) + "/"
+	var esi_caller = esi_caller_scene.instance()
+	add_child(esi_caller)
+	var response = yield( esi_caller.call_esi( scope ), "completed" )
+	esi_caller.queue_free()
+	
+	if response["response_code"] != 200:
+		# Probably downtime or something.
+		print( "FAILED TO GET SYSTEM INFO")
+		return "ERROR"
+	var system_name = response["response"].result["name"]
+	
+	station_cache[ str( system_id ) ] = response["response"].result
+	save_json(work_folder + "station_cache.json", station_cache)
+	
+	return system_name
+	pass
 
 func server_get_image( item_id : String ):
 	
