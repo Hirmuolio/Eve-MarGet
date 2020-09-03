@@ -13,7 +13,7 @@ func set_orders( esi_response : Array ):
 	for order in new_orders:
 		var row := []
 		var quantity : int = order["volume_remain"]
-		var price : int = order["price"]
+		var price : float = order["price"]
 		var min_volume : int = order["min_volume"]
 		
 		var buy_range : int
@@ -25,6 +25,9 @@ func set_orders( esi_response : Array ):
 			buy_range = 0
 		elif order["range"] == "station":
 			buy_range = -1
+		else:
+			# Should never happen
+			buy_range = -2
 		
 		var location_id : int = order["location_id"]
 		

@@ -28,13 +28,8 @@ func clear_table():
 		child.queue_free()
 
 
-func _on_quantity_sort():
-	pass # Replace with function body.
-
-
-func _on_price_sort(sort_ascending):
-	var index = 1
-	print( "Sorting by price")
+func sort_by( index : int, sort_ascending : bool):
+	print( "Sorting by index ", index)
 	var unsorted = true
 	var child_count : int = row_cont_node.get_child_count() 
 	while unsorted:
@@ -47,3 +42,33 @@ func _on_price_sort(sort_ascending):
 			elif !sort_ascending and children[i].contents[index] < children[i+1].contents[index]:
 					unsorted = true
 					row_cont_node.move_child( children[i+1], i)
+	pass
+
+func _on_quantity_sort( sort_ascending : bool ):
+	var index : int = 0
+	sort_by( index, sort_ascending)
+
+
+func _on_price_sort(sort_ascending : bool):
+	var index = 1
+	sort_by( index, sort_ascending)
+
+
+func _on_location_sort(sort_ascending : bool):
+	var index = 2
+	sort_by( index, sort_ascending)
+
+
+func _on_range_sort(sort_ascending : bool):
+	var index = 3
+	sort_by( index, sort_ascending)
+
+
+func _on_min_v_sort(sort_ascending : bool):
+	var index = 4
+	sort_by( index, sort_ascending)
+
+
+func _on_expires_sort(sort_ascending : bool):
+	var index = 5
+	sort_by( index, sort_ascending)

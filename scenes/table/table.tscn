@@ -66,3 +66,7 @@ __meta__ = {
 custom_constants/separation = 0
 [connection signal="sort" from="headers/quantity" to="." method="_on_quantity_sort"]
 [connection signal="sort" from="headers/price" to="." method="_on_price_sort"]
+[connection signal="sort" from="headers/location" to="." method="_on_location_sort"]
+[connection signal="sort" from="headers/range" to="." method="_on_range_sort"]
+[connection signal="sort" from="headers/min_v" to="." method="_on_min_v_sort"]
+[connection signal="sort" from="headers/expires" to="." method="_on_expires_sort"]
