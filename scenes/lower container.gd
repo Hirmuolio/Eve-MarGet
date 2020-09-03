@@ -1,17 +1,8 @@
 extends TabContainer
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	var sell_headers = ["Quantity", "Price", "Location", "Expires"]
-	var sell_aligns = [2, 2, 0, 2]
-	for i in range (sell_headers.size() ):
-		$"Sell orders".add_header( sell_headers[i], sell_aligns[i] )
-	
-	var buy_headers = ["Quantity", "Price", "Location", "Range", "Min volume", "Expires"]
-	var buy_aligns = [2, 2, 0, 2, 2, 2]
-	for i in range (buy_headers.size() ):
-		$"Buy orders".add_header( buy_headers[i], buy_aligns[i] )
+	pass
 
 func set_orders( esi_response : Array ):
 	$"Buy orders".clear_table()
@@ -21,19 +12,23 @@ func set_orders( esi_response : Array ):
 	var new_orders = esi_response[0]["response"].result
 	for order in new_orders:
 		var row := []
-		var quantity : String = str( order["volume_remain"] )
-		var price : String = Utility.format_decimal( str( order["price"] ) ) + " ISK"
-		var min_volume : String = str( order["min_volume"] )
+		var quantity : int = order["volume_remain"]
+		var price : int = order["price"]
+		var min_volume : int = order["min_volume"]
 		
-		var buy_range : String
+		var buy_range : int
 		if order["range"].is_valid_integer():
-			buy_range = order["range"] + " jumps"
-		else:
-			buy_range = order["range"]
+			buy_range = int(order["range"])
+		elif order["range"] == "region":
+			buy_range = 100
+		elif order["range"] == "solarsystem":
+			buy_range = 0
+		elif order["range"] == "station":
+			buy_range = -1
 		
 		var location_id : int = order["location_id"]
 		
-		# Jita 4-4 = 60003760		
+		# Jita 4-4 = 60003760
 		var location : String
 		if str(location_id) in DataHandler.location_cache:
 			location = DataHandler.location_cache[ str(location_id) ]["name"]
@@ -50,11 +45,10 @@ func set_orders( esi_response : Array ):
 		var unix_order = OS.get_unix_time_from_datetime( datetime_order )
 		var expires_seconds = unix_order - unix_now + duration * ( 24 * 60 * 60)
 		
-		var expires : String = Utility.duration_seconds_format( expires_seconds )
+		#var expires : String = Utility.duration_seconds_format( expires_seconds )
 		
-		if order["is_buy_order"] == false:
-			row = [ quantity, price, location, expires ]
-			$"Sell orders".add_row( row )
-		else:
-			row = [ quantity, price, location, buy_range, min_volume, expires ]
+		row = [ quantity, price, location, buy_range, min_volume, expires_seconds ]
+		if order["is_buy_order"]:
 			$"Buy orders".add_row(row)
+		else:
+			$"Sell orders".add_row( row )

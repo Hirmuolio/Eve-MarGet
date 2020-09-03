@@ -61,6 +61,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+sell_orders = true
 
 [node name="Buy orders" parent="VBoxContainer/lower container" instance=ExtResource( 1 )]
 visible = false

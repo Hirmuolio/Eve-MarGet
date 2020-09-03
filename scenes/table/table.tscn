@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/table/table.gd" type="Script" id=1]
+[ext_resource path="res://scenes/table/header.tscn" type="PackedScene" id=2]
 
 [node name="table" type="VBoxContainer"]
 anchor_right = 1.0
@@ -15,14 +16,44 @@ __meta__ = {
 
 [node name="headers" type="HBoxContainer" parent="."]
 margin_right = 1024.0
+margin_bottom = 14.0
 custom_constants/separation = 0
 
+[node name="quantity" parent="headers" instance=ExtResource( 2 )]
+label = "Quantity"
+
+[node name="price" parent="headers" instance=ExtResource( 2 )]
+margin_left = 70.0
+margin_right = 140.0
+label = "Price"
+
+[node name="location" parent="headers" instance=ExtResource( 2 )]
+margin_left = 140.0
+margin_right = 210.0
+label = "Location"
+
+[node name="range" parent="headers" instance=ExtResource( 2 )]
+margin_left = 210.0
+margin_right = 280.0
+label = "Range"
+
+[node name="min_v" parent="headers" instance=ExtResource( 2 )]
+margin_left = 280.0
+margin_right = 350.0
+label = "Min volume"
+
+[node name="expires" parent="headers" instance=ExtResource( 2 )]
+margin_left = 350.0
+margin_right = 420.0
+label = "Expires"
+
 [node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 14.0
 margin_right = 1024.0
-margin_bottom = 4.0
+margin_bottom = 18.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_top = 4.0
+margin_top = 18.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
@@ -33,3 +64,5 @@ __meta__ = {
 
 [node name="row container" type="VBoxContainer" parent="ScrollContainer"]
 custom_constants/separation = 0
+[connection signal="sort" from="headers/quantity" to="." method="_on_quantity_sort"]
+[connection signal="sort" from="headers/price" to="." method="_on_price_sort"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/table/row.gd" type="Script" id=1]
+[ext_resource path="res://scenes/table/row element.tscn" type="PackedScene" id=2]
 
 [node name="row" type="HBoxContainer"]
 rect_min_size = Vector2( 0, 10 )
@@ -9,3 +10,26 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="quantity" parent="." instance=ExtResource( 2 )]
+margin_right = 11.0
+
+[node name="price" parent="." instance=ExtResource( 2 )]
+margin_left = 11.0
+margin_right = 22.0
+
+[node name="location" parent="." instance=ExtResource( 2 )]
+margin_left = 22.0
+margin_right = 33.0
+
+[node name="range" parent="." instance=ExtResource( 2 )]
+margin_left = 33.0
+margin_right = 44.0
+
+[node name="min_v" parent="." instance=ExtResource( 2 )]
+margin_left = 44.0
+margin_right = 55.0
+
+[node name="expires" parent="." instance=ExtResource( 2 )]
+margin_left = 55.0
+margin_right = 66.0

@@ -6,14 +6,14 @@
 margin_right = 70.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 70, 0 )
-custom_constants/separation = 2
+custom_constants/separation = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="."]
-margin_right = 64.0
+margin_right = 60.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 text = "HEADER"
@@ -27,9 +27,10 @@ __meta__ = {
 }
 
 [node name="VSeparator" type="VSeparator" parent="."]
-margin_left = 66.0
+margin_left = 60.0
 margin_right = 70.0
 margin_bottom = 14.0
+rect_min_size = Vector2( 10, 0 )
 mouse_filter = 2
 mouse_default_cursor_shape = 14
 
