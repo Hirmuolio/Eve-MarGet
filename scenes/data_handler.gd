@@ -138,6 +138,20 @@ func esi_get_orders( item_id : String):
 	
 	emit_signal("orders_loaded", [response])
 
+func esi_get_market_history( item_id : String ):
+	var region : String = "10000002"
+	# https://esi.evetech.net/v1/markets/10000002/history/?datasource=tranquility&type_id=44992
+	var scope : String = "/v1/markets/"+ region + "/history/"
+	var payload = "?datasource=tranquility&type_id=" + item_id
+	
+	var esi_caller = esi_caller_scene.instance()
+	add_child(esi_caller)
+	var response = yield( esi_caller.call_esi( scope+payload ), "completed" )
+	esi_caller.queue_free()
+	
+	emit_signal("history_loaded", [response])
+	pass
+
 func get_station_name( station_id : int ):
 	var scope : String = "/v2/universe/stations/" + str(station_id) + "/"
 	var esi_caller = esi_caller_scene.instance()

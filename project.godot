@@ -17,12 +17,17 @@ _global_script_class_icons={
 
 config/name="EVE MarGet"
 run/main_scene="res://main.tscn"
+run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [autoload]
 
 DataHandler="*res://scenes/data_handler.tscn"
 Utility="*res://utility.gd"
+
+[display]
+
+window/energy_saving/keep_screen_on=false
 
 [rendering]
 

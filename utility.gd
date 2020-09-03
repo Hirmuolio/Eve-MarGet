@@ -4,13 +4,7 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-	#test()
 
-func test():
-	# 2d 12h 8m 40s
-	var raw = 216520
-	var formatted = duration_seconds_format(  raw )
-	print( "f: ", formatted)
 
 func format_decimal( input : String ) -> String:
 	var decimal_separator = "."

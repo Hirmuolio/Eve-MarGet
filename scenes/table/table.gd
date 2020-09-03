@@ -10,14 +10,7 @@ var sort_reverse = false
 
 func _ready():
 	pass
-	#test()
 
-func test():
-	add_header( "test1" )
-	add_header( "test2" )
-	var row = ["aaaaaaaa", "bbbbbbb"]
-	add_row( row )
-	add_row( row )
 
 
 func add_header( label : String, align := 0 ):
