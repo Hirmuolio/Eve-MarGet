@@ -7,6 +7,7 @@ var ids_attributes : Dictionary = {}
 var marketgroups : Dictionary = {}
 var station_cache : Dictionary = {}
 var system_cache : Dictionary = {}
+var orders_cache : Dictionary = {} # Valid for 1200 seconds
 
 var work_folder = "user://"
 
@@ -122,6 +123,12 @@ func esi_marketgroups():
 
 
 func esi_get_orders( item_id : String):
+	if item_id in orders_cache:
+		var t_delta = Utility.timeduration_delta(OS.get_datetime(),  orders_cache[item_id]["time"] )
+		if Utility.timeduration_to_seconds( t_delta ) < 1200:
+			yield(get_tree(),"idle_frame") # Remove in GODOT 4
+			emit_signal("orders_loaded", orders_cache[item_id]["response"])
+			return
 	var region : String = "10000002"
 	var scope : String = "/v1/markets/"+ region + "/orders/"
 	#var all_orders : Array = []
@@ -137,7 +144,12 @@ func esi_get_orders( item_id : String):
 		var pages = response["headers"]["X-Pages"]
 		print( "ERROR MANY PAGES ", pages)
 	
-	emit_signal("orders_loaded", [response])
+	orders_cache[item_id] = {
+		"time": OS.get_datetime(),
+		"response": response["response"].result
+	}
+	
+	emit_signal("orders_loaded", response["response"].result)
 
 func esi_get_market_history( item_id : String ):
 	var region : String = "10000002"

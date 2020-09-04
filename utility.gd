@@ -79,6 +79,32 @@ func duration_seconds_format( in_seconds : int) -> String:
 	var output : String = str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
 	return output
 
+func timeduration_delta( timeduration_1 : Dictionary, timeduration_2 : Dictionary ) -> Dictionary:
+	var ret : Dictionary = {}
+	
+	ret = {
+		"year": timeduration_1["year"] - timeduration_2["year"],
+		"month": timeduration_1["month"] - timeduration_2["month"],
+		"day": timeduration_1["day"] - timeduration_2["day"],
+		"hour": timeduration_1["hour"] - timeduration_2["hour"],
+		"minute": timeduration_1["minute"] - timeduration_2["minute"],
+		"second": timeduration_1["second"] - timeduration_2["second"]
+	}
+	
+	return ret
+
+func timeduration_to_seconds( timeduration : Dictionary) -> int:
+	var seconds : int
+	
+	seconds = timeduration["year"] * 360 * 24 * 60 * 60 \
+				+ timeduration["month"] * 30 * 24 * 60 * 60 \
+				+ timeduration["day"] * 24 * 60 * 60 \
+				+ timeduration["hour"] * 60 * 60 \
+				+ timeduration["minute"] * 60 \
+				+ timeduration["second"]
+	
+	return seconds
+
 func array_multiply( array : Array, multiplier : float ) -> Array:
 	var return_arr : Array = []
 	for element in array:

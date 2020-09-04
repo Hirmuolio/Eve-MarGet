@@ -9,8 +9,7 @@ func set_orders( esi_response : Array ):
 	$"Sell orders".clear_table()
 	var time_now = OS.get_datetime ( true )
 	var unix_now = OS.get_unix_time_from_datetime( time_now )
-	var new_orders = esi_response[0]["response"].result
-	for order in new_orders:
+	for order in esi_response:
 		var row := []
 		var quantity : int = order["volume_remain"]
 		var price : float = order["price"]
