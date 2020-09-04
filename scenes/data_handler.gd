@@ -90,7 +90,7 @@ func esi_ids_to_names( ids : Array ):
 	while processed < ids.size():
 		var esi_caller = esi_caller_scene.instance()
 		add_child(esi_caller)
-		var cutoff_ids = ids.slice(processed, min( processed+batch, total-1 ) )
+		var cutoff_ids = ids.slice(processed, int( min( processed+batch, total-1 ) ) )
 		processed = processed + cutoff_ids.size()
 		print( processed, "/", total )
 		calls = calls + 1
@@ -154,9 +154,9 @@ func esi_get_market_history( item_id : String ):
 	pass
 
 func get_station_name( station_id : int, system_id : int ) -> String:
-	if str(station_id) in DataHandler.station_cache:
-		yield( get_tree().create_timer(0), "timeout" )
-		return DataHandler.station_cache[ str(station_id) ]["name"]
+	if str(station_id) in station_cache:
+		yield(get_tree(),"idle_frame") # Remove in GODOT 4
+		return station_cache[ str(station_id) ]["name"]
 	var scope : String = "/v2/universe/stations/" + str(station_id) + "/"
 	var esi_caller = esi_caller_scene.instance()
 	add_child(esi_caller)
@@ -242,7 +242,7 @@ func image_request_completed( _result, response_code, _headers, body, item_id ):
 	if not dir.dir_exists("icons"):
 		print( "No icons folder")
 		dir.make_dir("icons")
-	image.save_png ( folder +item_id + ".png" )
+	var _err = image.save_png ( folder +item_id + ".png" )
 	
 	var texture = ImageTexture.new()
 	texture.create_from_image(image)

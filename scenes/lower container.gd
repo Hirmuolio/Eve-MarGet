@@ -32,8 +32,13 @@ func set_orders( esi_response : Array ):
 		var location_id : int = order["location_id"]
 		
 		# Jita 4-4 = 60003760
-		var system_id = order["system_id"]
-		var location : String = yield( DataHandler.get_station_name( location_id, system_id ), "completed" )
+		var location : String
+		if str(location_id) in DataHandler.station_cache:
+			# Remove in Godot 4
+			location = DataHandler.station_cache[ str(location_id) ]["name"]
+		else:
+			var system_id = order["system_id"]
+			location = yield( DataHandler.get_station_name( location_id, system_id ), "completed" )
 		
 		
 		# "issued": "2020-05-09T22:12:14Z",
@@ -45,7 +50,6 @@ func set_orders( esi_response : Array ):
 		var unix_order = OS.get_unix_time_from_datetime( datetime_order )
 		var expires_seconds = unix_order - unix_now + duration * ( 24 * 60 * 60)
 		
-		#var expires : String = Utility.duration_seconds_format( expires_seconds )
 		
 		row = [ quantity, price, location, buy_range, min_volume, expires_seconds ]
 		if order["is_buy_order"]:
