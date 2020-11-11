@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://graphics/white.png" type="Texture" id=1]
+[ext_resource path="res://scenes/graph/graph.gd" type="Script" id=2]
+
+[node name="graph" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color( 0.0235294, 0.00392157, 0.00392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+stretch_mode = 2
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 5.33508, 54.6, 17.5239, 6.95695, 75.6384, 87.172, 126.855, 50.4561, 189.705, 132.162, 341.245, 245.991, 476.024, 166.38, 552.143, 56.7411, 595.753, 164.325, 662.069, 198.01, 702.285, 222.247 )
+width = 1.0
+antialiased = true
