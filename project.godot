@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "tree_group",
+"language": "GDScript",
+"path": "res://scenes/tree/tree_group.gd"
+}, {
+"base": "Node",
+"class": "tree_item",
+"language": "GDScript",
+"path": "res://scenes/tree/tree_item.gd"
+} ]
 _global_script_class_icons={
-
+"tree_group": "",
+"tree_item": ""
 }
 
 [application]
@@ -31,5 +42,6 @@ window/energy_saving/keep_screen_on=false
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 quality/intended_usage/framebuffer_allocation=0
 environment/default_environment="res://default_env.tres"

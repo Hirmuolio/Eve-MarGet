@@ -1,58 +1,70 @@
 extends Tree
 
 var root
+var tree_dict := {}
+
 
 signal item_id_selected( item_id )
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	root = create_item()
-	set_hide_root(true)
+	$tree_data.fill_data()
+	
 	create_tree()
 
+
 func create_tree():
-	for group_id in DataHandler.marketgroups:
-		if not "parent_group_id" in DataHandler.marketgroups[group_id]:
-			add_group( DataHandler.marketgroups[group_id] )
+	# Add top level groups
+	clear()
+	root = create_item()
+	set_hide_root(true)
+	for node in $tree_data.get_children():
+		add_group( node, root )
 
 
-func add_group( group_dic : Dictionary):
-	var group = create_item(root)
-	#group.add_button ( 0, icon)
-	group.set_text(0, group_dic["name"]+" ")
-	group.collapsed = true
-	for child_group_id in group_dic["child_group_id"]:
-		add_subgroup(child_group_id, group)
-	for item_id in group_dic["types"]:
-		add_item(item_id, group)
+func add_group( node : tree_group, parent : TreeItem ):
+	if node.is_hidden:
+		return
+	var group = create_item(parent)
+	group.set_text(0, node.group_name )
+	group.set_metadata(0, node)
+	group.collapsed = node.is_collapsed
+	#group.connect("item_selected", self, "_on_Timer_timeout")
 	
+	for group_node in node.child_groups:
+		add_group(group_node, group)
+	
+	for item_node in node.child_items:
+		add_item(item_node, group)
 
-func add_subgroup(group_id : String, parent : TreeItem):
+
+func add_item( node : tree_item, parent : TreeItem ):
+	if node.is_hidden:
+		return
 	var group = create_item(parent)
-	group.set_text(0, DataHandler.marketgroups[group_id]["name"]+" ")
-	group.collapsed = true
-	for child_group_id in DataHandler.marketgroups[group_id]["child_group_id"]:
-		add_subgroup(child_group_id, group)
-	for item_id in DataHandler.marketgroups[group_id]["types"]:
-		add_item( str(item_id), group)
+	group.set_text(0, node.item_name)
+	group.set_metadata(0, node)
 
-
-func add_item( item_id : String, parent : TreeItem ):
-	var group = create_item(parent)
-	group.set_text(0, DataHandler.ids_names[item_id])
-
-
-func _on_market_tree_item_selected():
+func _on_market_tree_cell_selected():
 	var item : TreeItem = get_selected()
-	var item_name = item.get_text( 0 )
-	if item_name[-1] == " ":
+	var node = item.get_metadata(0)
+	
+	print( node.is_hidden )
+	
+	if node.is_group:
 		item.collapsed = !item.collapsed
+		node.is_collapsed = item.collapsed
 		item.deselect(0)
 	else:
-		if item_name in DataHandler.names_ids:
-			var id = DataHandler.names_ids[item_name]
-			print( item_name, " ", id )
-			emit_signal("item_id_selected", id)
-		else:
-			print( "ERROR UNKNOWN ITEM NAME ", item_name)
+		emit_signal("item_id_selected", node.item_id)
+
+
+func _on_search_field_text_changed():
+	var search_term : String = get_node( "../HBoxContainer/search_field" ).text
+	print( search_term )
+	
+	$tree_data.filter( search_term )
+	create_tree()
+
+
 

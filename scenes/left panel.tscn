@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/market tree.gd" type="Script" id=1]
+[ext_resource path="res://scenes/left panel.gd" type="Script" id=2]
+[ext_resource path="res://scenes/tree_dictionary.gd" type="Script" id=3]
 
 [node name="left panel" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 200, 0 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -17,10 +20,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HBoxContainer" type="HBoxContainer" parent="vertical container"]
+margin_right = 1024.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Label" type="Label" parent="vertical container/HBoxContainer"]
+margin_top = 3.0
+margin_right = 46.0
+margin_bottom = 17.0
+text = "Search:"
+
+[node name="search_field" type="TextEdit" parent="vertical container/HBoxContainer"]
+margin_left = 50.0
+margin_right = 1024.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
 [node name="market tree" type="Tree" parent="vertical container"]
+margin_top = 24.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
-[connection signal="item_selected" from="vertical container/market tree" to="vertical container/market tree" method="_on_market_tree_item_selected"]
+
+[node name="tree_data" type="Node" parent="vertical container/market tree"]
+script = ExtResource( 3 )
+[connection signal="text_changed" from="vertical container/HBoxContainer/search_field" to="vertical container/market tree" method="_on_search_field_text_changed"]
+[connection signal="cell_selected" from="vertical container/market tree" to="vertical container/market tree" method="_on_market_tree_cell_selected"]
+[connection signal="item_id_selected" from="vertical container/market tree" to="." method="_on_market_tree_item_id_selected"]
