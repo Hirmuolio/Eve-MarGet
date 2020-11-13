@@ -129,7 +129,7 @@ func esi_get_orders( item_id : String):
 			yield(get_tree(),"idle_frame") # Remove in GODOT 4
 			emit_signal("orders_loaded", orders_cache[item_id]["response"])
 			return
-	var region : String = "10000002"
+	var region : String = str(Config.region_id)
 	var scope : String = "/v1/markets/"+ region + "/orders/"
 	#var all_orders : Array = []
 	
@@ -152,7 +152,7 @@ func esi_get_orders( item_id : String):
 	emit_signal("orders_loaded", response["response"].result)
 
 func esi_get_market_history( item_id : String ):
-	var region : String = "10000002"
+	var region : String = str(Config.region_id)
 	# https://esi.evetech.net/v1/markets/10000002/history/?datasource=tranquility&type_id=44992
 	var scope : String = "/v1/markets/"+ region + "/history/"
 	var payload = "?datasource=tranquility&type_id=" + item_id
@@ -193,6 +193,28 @@ func get_station_name( station_id : int, system_id : int ) -> String:
 	
 	return station_name
 
+func get_attributes( item_id : String ):
+	
+	if item_id in ids_attributes:
+		return ids_attributes[item_id]
+	
+	var scope : String = "/v3/universe/types/" + item_id + "/"
+	
+	var esi_caller = esi_caller_scene.instance()
+	add_child(esi_caller)
+	var response = yield( esi_caller.call_esi( scope ), "completed" )
+	esi_caller.queue_free()
+	
+	if response["response_code"] != 200:
+		# Probably downtime or something.
+		print( "FAILED TO GET ITEM INFO")
+		return "ERROR"
+	
+	ids_attributes[ item_id ] = response["response"].result
+	save_json(work_folder + "ids_attributes.json", ids_attributes)
+	
+	return response["response"].result
+
 func get_system_name( system_id : int) -> String:
 	var scope : String = "/v4/universe/systems/" + str(system_id) + "/"
 	var esi_caller = esi_caller_scene.instance()
@@ -210,7 +232,6 @@ func get_system_name( system_id : int) -> String:
 	save_json(work_folder + "station_cache.json", station_cache)
 	
 	return system_name
-	pass
 
 func server_get_image( item_id : String ):
 	
@@ -229,13 +250,17 @@ func server_get_image( item_id : String ):
 		emit_signal( "image_loaded", texture )
 		return
 	
-	#https://images.evetech.net/types/587/icon
+	# https://images.evetech.net/types/587/icon
+	# https://images.evetech.net/types/46184/bp
+	var url1 = "https://images.evetech.net/types/" + item_id
+	
 	var url = "https://images.evetech.net/types/"+ item_id +"/icon"
 	var request_node = HTTPRequest.new()
 	add_child(request_node)
 	request_node.connect("request_completed", self, "image_request_completed", [item_id])
 	
 	var error = request_node.request(url)
+	request_node.queue_free()
 	if error != OK:
 		push_error( "Failed to load image" )
 

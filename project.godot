@@ -35,6 +35,7 @@ config/icon="res://icon.png"
 
 DataHandler="*res://scenes/data_handler.tscn"
 Utility="*res://utility.gd"
+Config="*res://scenes/config.tscn"
 
 [display]
 

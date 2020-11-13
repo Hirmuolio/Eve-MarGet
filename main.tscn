@@ -22,12 +22,12 @@ __meta__ = {
 [node name="left_panel" parent="panel container" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 200.0
+margin_right = 300.0
 margin_bottom = 600.0
 
 [node name="right_panel" parent="panel container" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 204.0
+margin_left = 304.0
 margin_right = 1024.0
 margin_bottom = 600.0

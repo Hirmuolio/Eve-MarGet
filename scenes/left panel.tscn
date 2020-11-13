@@ -7,7 +7,7 @@
 [node name="left panel" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 200, 0 )
+rect_min_size = Vector2( 300, 0 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -36,6 +36,8 @@ margin_left = 50.0
 margin_right = 1024.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
+draw_tabs = true
+wrap_enabled = true
 
 [node name="market tree" type="Tree" parent="vertical container"]
 margin_top = 24.0

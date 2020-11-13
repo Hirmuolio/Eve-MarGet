@@ -21,6 +21,17 @@ func _ready():
 	pass # Replace with function body.
 
 
+func get_items():
+	# returns all not-hidden item nodes below this
+	var item_nodes := []
+	for child in get_children():
+		if !child.is_hidden:
+			if child.is_group:
+				item_nodes += child.get_items()
+			else:
+				item_nodes.append( child )
+	return item_nodes
+
 func create_group( new_group_id : String ):
 	group_id = new_group_id
 	group_name = DataHandler.marketgroups[group_id]["name"]
