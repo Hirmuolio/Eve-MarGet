@@ -116,9 +116,9 @@ func _on_search_field_text_changed():
 			searc_active = false
 	else:
 		searc_active = true
-		if Config.search_mode == 0:
+		if Config.search_display_mode == 0:
 			create_item_tree()
-		elif Config.search_mode == 1:
+		elif Config.search_display_mode == 1:
 			create_flattened_tree()
 		else:
 			create_tree()

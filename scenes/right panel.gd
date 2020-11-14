@@ -6,6 +6,7 @@ onready var category_node := get_node("VBoxContainer/upper container/texts conta
 onready var orders_node := get_node( "VBoxContainer/lower container" )
 onready var history_node := get_node("VBoxContainer/lower container/history" )
 
+signal open_options
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,3 +37,8 @@ func set_orders( esi_response : Array):
 
 func set_history( esi_response : Array ):
 	history_node.set_history( esi_response )
+
+
+func _on_TextureButton_pressed():
+	emit_signal("open_options")
+	pass # Replace with function body.
