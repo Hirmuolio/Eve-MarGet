@@ -9,9 +9,9 @@ var item_id : String
 var is_hidden : bool = false
 const is_group : bool = false
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	pass
 
 
 func create_item( new_item_id:String):
@@ -21,9 +21,15 @@ func create_item( new_item_id:String):
 
 func filter( search_term : String ):
 	
-	if search_term == "":
+	if search_term.length() < Config.min_search_length:
 		is_hidden = false
-	elif item_name.findn(search_term) > -1:
+	elif Config.search_mode == 0 and item_name.findn(search_term) > -1:
 		is_hidden = false
+	elif Config.search_mode == 1 and item_name.matchn(search_term):
+		is_hidden = false
+	elif Config.search_mode == 2 and search_term.is_subsequence_ofi(item_name):
+		is_hidden = false
+	elif Config.search_mode > 2:
+		print( "Invalid search methord")
 	else:
 		is_hidden = true

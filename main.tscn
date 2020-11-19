@@ -79,7 +79,16 @@ margin_top = 48.0
 margin_right = 404.0
 margin_bottom = 68.0
 label = "Search display"
+
+[node name="search mode" parent="options/option fields" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 404.0
+margin_bottom = 92.0
+label = "Search display"
 [connection signal="open_options" from="panel container/right_panel" to="options" method="_on_right_panel_open_options"]
 [connection signal="pressed" from="options/option fields/Button" to="options" method="_on_Button_pressed"]
 [connection signal="content_change" from="options/option fields/search length" to="options" method="_on_search_length_content_change"]
 [connection signal="content_change" from="options/option fields/search display" to="options" method="_on_search_display_content_change"]
+[connection signal="content_change" from="options/option fields/search mode" to="options" method="_on_search_mode_content_change"]
