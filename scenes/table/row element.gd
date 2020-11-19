@@ -12,7 +12,9 @@ func set_width( new_width : int):
 	set("rect_min_size" , new_rect)
 
 func set_content( new_content : String ):
-	$Label.set( "text", new_content )
+	#$Label.set( "text", new_content )
+	$Label.clear()
+	$Label.append_bbcode( new_content )
 
 func set_align( align ):
 	$Label.set( "align", align)

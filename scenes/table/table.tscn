@@ -15,6 +15,7 @@ __meta__ = {
 }
 
 [node name="headers" type="HBoxContainer" parent="."]
+modulate = Color( 0.890196, 0.890196, 0.890196, 1 )
 margin_right = 1024.0
 margin_bottom = 14.0
 custom_constants/separation = 0
@@ -63,6 +64,10 @@ __meta__ = {
 }
 
 [node name="row container" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 1024.0
+margin_bottom = 582.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/separation = 0
 [connection signal="sort" from="headers/quantity" to="." method="_on_quantity_sort"]
 [connection signal="sort" from="headers/price" to="." method="_on_price_sort"]
