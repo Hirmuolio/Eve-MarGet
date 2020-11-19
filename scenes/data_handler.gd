@@ -252,9 +252,22 @@ func server_get_image( item_id : String ):
 	
 	# https://images.evetech.net/types/587/icon
 	# https://images.evetech.net/types/46184/bp
-	#var url1 = "https://images.evetech.net/types/" + item_id
+	var url = "https://images.evetech.net/types/" + item_id
+	var request_node = HTTPRequest.new()
+	add_child(request_node)
+	request_node.connect("request_completed", self, "image_type_found", [item_id])
 	
-	var url = "https://images.evetech.net/types/"+ item_id +"/icon"
+	request_node.request(url)
+	yield( request_node, "request_completed")
+	request_node.queue_free()
+
+
+func image_type_found( _result, response_code, _headers, body, item_id ):
+	if response_code != 200:
+		print( "Failed to get image type. Error ", response_code)
+	var type : String = str2var( body.get_string_from_utf8() )[-1]
+	
+	var url = "https://images.evetech.net/types/"+ item_id +"/" + type
 	var request_node = HTTPRequest.new()
 	add_child(request_node)
 	request_node.connect("request_completed", self, "image_request_completed", [item_id])
