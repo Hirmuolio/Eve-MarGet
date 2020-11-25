@@ -12,9 +12,9 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
-margin_top = 4.0
+margin_top = 5.0
 margin_right = 200.0
-margin_bottom = 18.0
+margin_bottom = 19.0
 rect_min_size = Vector2( 200, 14 )
 align = 2
 

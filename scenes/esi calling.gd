@@ -7,16 +7,12 @@ var attempts : int = 0
 
 var success_codes = [200, 204, 304, 400, 404]
 
-var base_url : String = 'https://esi.evetech.net'
-var useragent = "Godot market tool"
+const base_url : String = 'https://esi.evetech.net'
+const useragent = "Godot market tool"
 
 signal call_parsed
 
 func _ready():
-	#var group_id = 115
-	#yield( call_esi( "/v1/markets/groups/"+str(group_id) ), "completed" )
-	#print( headers )
-	#print( response.result )
 	pass
 
 func call_esi( route : String, payload : String = "", method : int = HTTPClient.METHOD_GET ):

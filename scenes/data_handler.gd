@@ -8,6 +8,7 @@ var marketgroups : Dictionary = {}
 var station_cache : Dictionary = {}
 var system_cache : Dictionary = {}
 var orders_cache : Dictionary = {} # Valid for 1200 seconds
+var region_cache : Dictionary = {}
 
 var work_folder = "user://"
 
@@ -20,6 +21,9 @@ func _ready():
 	var dir = Directory.new()
 	var folder = work_folder
 	dir.open(folder)
+	
+	# Load all the cached data
+	# If the data is important fetch it here
 	
 	if dir.file_exists("marketgroups.json"):
 		marketgroups = load_json(work_folder + "marketgroups.json")
@@ -43,6 +47,13 @@ func _ready():
 	else:
 		system_cache = {}
 		save_json(work_folder + "system_cache.json", system_cache)
+	
+	if dir.file_exists("region_cache.json"):
+		region_cache = load_json(work_folder + "region_cache.json")
+	else:
+		region_cache = {}
+		yield( esi_regions(), "completed" )
+		save_json(work_folder + "region_cache.json", region_cache)
 
 
 func load_json(file_path: String):
@@ -120,6 +131,24 @@ func esi_marketgroups():
 	var marketgroup_list = response["response"].result
 	
 	yield( process_marketgroups( marketgroup_list ), "completed")
+
+func esi_regions():
+	var esi_caller = esi_caller_scene.instance()
+	add_child(esi_caller)
+	var response = yield( esi_caller.call_esi( "/v1/universe/regions/" ), "completed" )
+	
+	
+	var region_ids : Array = response["response"].result
+	
+	response = yield( esi_caller.call_esi( "/v3/universe/names/", str( region_ids ), HTTPClient.METHOD_POST  ), "completed" )
+	esi_caller.queue_free()
+	
+	# Put the names and IDs into dictionary for ease of use
+	
+	for thing in response["response"].result:
+		var system_id = thing["id"]
+		var system_name = thing["name"]
+		region_cache[system_id] = system_name
 
 
 func esi_get_orders( item_id : String):
