@@ -9,9 +9,9 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func initialize():
+	get_node("vertical container/market tree").initialize()
+	pass
 
 
 func _on_market_tree_item_id_selected(item_id):

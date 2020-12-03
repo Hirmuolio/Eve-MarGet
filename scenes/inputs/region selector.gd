@@ -3,6 +3,10 @@ extends Control
 
 
 func _ready():
+	pass
+
+func initialize():
+	# Called after DataHandler has loaded all the data
 	
 	$HBoxContainer/MenuButton.text = DataHandler.region_cache[ str(Config.region_id) ]
 	

@@ -10,6 +10,8 @@ var system_cache : Dictionary = {}
 var orders_cache : Dictionary = {} # Valid for 1200 seconds
 var region_cache : Dictionary = {}
 
+var ready : bool = false
+
 var work_folder = "user://"
 
 var esi_caller_scene = preload( "res://scenes/esi calling.tscn" )
@@ -18,10 +20,13 @@ signal image_loaded( image )
 signal orders_loaded( orders )
 
 func _ready():
+	pass
+
+func load_caches():
 	var dir = Directory.new()
 	var folder = work_folder
 	dir.open(folder)
-	
+
 	# Load all the cached data
 	# If the data is important fetch it here
 	
@@ -54,7 +59,9 @@ func _ready():
 		region_cache = {}
 		yield( esi_regions(), "completed" )
 		save_json(work_folder + "region_cache.json", region_cache)
-
+	yield(get_tree(),"idle_frame")
+	print( "Dataloading completed")
+	ready = true
 
 func load_json(file_path: String):
 	#Get dictionary out of kson file
@@ -148,7 +155,7 @@ func esi_regions():
 	for thing in response["response"].result:
 		var system_id = thing["id"]
 		var system_name = thing["name"]
-		region_cache[system_id] = system_name
+		region_cache[str(system_id)] = system_name
 
 
 func esi_get_orders( item_id : String):

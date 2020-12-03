@@ -10,10 +10,12 @@ signal item_id_selected( item_id )
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
+
+func initialize():
 	$tree_data.fill_data()
 	
 	create_tree()
-
 
 func create_item_tree():
 	# Creates tree without any groups. Only items
