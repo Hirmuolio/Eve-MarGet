@@ -159,13 +159,18 @@ func esi_regions():
 
 
 func esi_get_orders( item_id : String):
-	if item_id in orders_cache:
-		var t_delta = Utility.timeduration_delta(OS.get_datetime(),  orders_cache[item_id]["time"] )
+	var region : String = str(Config.region_id)
+	if not region in orders_cache:
+		orders_cache[region] = {}
+
+	if item_id in orders_cache[region]:
+		print( "getting from cache region id ", region, " item id ", item_id)
+		var t_delta = Utility.timeduration_delta(OS.get_datetime(),  orders_cache[region][item_id]["time"] )
 		if Utility.timeduration_to_seconds( t_delta ) < 1200:
 			yield(get_tree(),"idle_frame") # Remove in GODOT 4
-			emit_signal("orders_loaded", orders_cache[item_id]["response"])
+			emit_signal("orders_loaded", orders_cache[region][item_id]["response"])
 			return
-	var region : String = str(Config.region_id)
+	
 	var scope : String = "/v1/markets/"+ region + "/orders/"
 	#var all_orders : Array = []
 	
@@ -180,7 +185,7 @@ func esi_get_orders( item_id : String):
 		var pages = response["headers"]["X-Pages"]
 		print( "ERROR MANY PAGES ", pages)
 	
-	orders_cache[item_id] = {
+	orders_cache[region][item_id] = {
 		"time": OS.get_datetime(),
 		"response": response["response"].result
 	}
