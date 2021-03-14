@@ -32,3 +32,8 @@ func _on_search_display_content_change(new_value):
 
 func _on_search_mode_content_change(new_value):
 	Config.search_mode = new_value
+
+
+func _on_open_cache_pressed():
+	OS. shell_open( ProjectSettings.globalize_path( DataHandler.work_folder ) )
+	pass # Replace with function body.

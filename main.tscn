@@ -56,7 +56,6 @@ margin_right = 1024.0
 margin_bottom = 566.0
 
 [node name="options" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 4 )
@@ -79,36 +78,43 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="options/option fields"]
+[node name="close" type="Button" parent="options/option fields"]
 margin_right = 404.0
 margin_bottom = 20.0
 text = "Close options"
 
-[node name="search length" parent="options/option fields" instance=ExtResource( 6 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="open cache" type="Button" parent="options/option fields"]
 margin_top = 24.0
 margin_right = 404.0
 margin_bottom = 44.0
-label = "Minimum search length"
+text = "Open cache folder"
 
-[node name="search display" parent="options/option fields" instance=ExtResource( 7 )]
+[node name="search length" parent="options/option fields" instance=ExtResource( 6 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 48.0
 margin_right = 404.0
 margin_bottom = 68.0
-label = "Search display"
+label = "Minimum search length"
 
-[node name="search mode" parent="options/option fields" instance=ExtResource( 7 )]
+[node name="search display" parent="options/option fields" instance=ExtResource( 7 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 72.0
 margin_right = 404.0
 margin_bottom = 92.0
 label = "Search display"
+
+[node name="search mode" parent="options/option fields" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 404.0
+margin_bottom = 116.0
+label = "Search display"
 [connection signal="open_options" from="VBoxContainer/panel container/right_panel" to="options" method="_on_right_panel_open_options"]
-[connection signal="pressed" from="options/option fields/Button" to="options" method="_on_Button_pressed"]
+[connection signal="pressed" from="options/option fields/close" to="options" method="_on_Button_pressed"]
+[connection signal="pressed" from="options/option fields/open cache" to="options" method="_on_open_cache_pressed"]
 [connection signal="content_change" from="options/option fields/search length" to="options" method="_on_search_length_content_change"]
 [connection signal="content_change" from="options/option fields/search display" to="options" method="_on_search_display_content_change"]
 [connection signal="content_change" from="options/option fields/search mode" to="options" method="_on_search_mode_content_change"]
