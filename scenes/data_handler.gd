@@ -306,6 +306,7 @@ func server_get_image( item_id : String ):
 func image_type_found( _result, response_code, _headers, body, item_id ):
 	if response_code != 200:
 		print( "Failed to get image type. Error ", response_code)
+		return
 	var type : String = str2var( body.get_string_from_utf8() )[-1]
 	
 	var url = "https://images.evetech.net/types/"+ item_id +"/" + type
